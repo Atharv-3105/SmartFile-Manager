@@ -3,6 +3,7 @@ package storage
 import(
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 func InsertExtraction(
@@ -19,6 +20,6 @@ func InsertExtraction(
 	if err != nil {
 		return fmt.Errorf("[DB] insert extraction: %w", err)
 	}
-
+	log.Println("[DB] inserting extractions for fileID:", fileID)
 	return nil
 }

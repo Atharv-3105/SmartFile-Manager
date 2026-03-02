@@ -5,6 +5,7 @@ import(
 	"database/sql"
 	"encoding/binary"
 	"fmt"
+	"log"
 )
 
 //This will store a vector embedding for a file
@@ -31,7 +32,7 @@ func InsertEmbedding(
 	if err != nil {
 		return fmt.Errorf("[DB] insert embedding: %w", err)
 	}
-
+	log.Println("[DB] inserting embeddings for FILEID:", fileID)
 	return nil
 }
 
