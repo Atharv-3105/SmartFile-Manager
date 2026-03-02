@@ -1,8 +1,9 @@
 package storage
 
-import(
+import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	// "time"
@@ -33,7 +34,7 @@ func UpsertFile(tx *sql.Tx, path string) (int64, error ) {
 	//Case: When no data is present
 	case err == sql.ErrNoRows:
 		res, err := tx.Exec(
-			`INSERT INTO files (path,filename,extension,last_modified) VALUE (?,?,?,?)`,
+			`INSERT INTO files (path,filename,extension,last_modified) VALUES (?,?,?,?)`,
 			path,filename,extension,lastModified,
 		)
 
@@ -62,6 +63,6 @@ func UpsertFile(tx *sql.Tx, path string) (int64, error ) {
 			return 0, fmt.Errorf("[DB] update file: %w", err)
 		}
 	}
-
+	log.Println("[DB] inserting file:", path)
 	return fileID, nil
 }
