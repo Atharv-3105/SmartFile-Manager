@@ -18,6 +18,13 @@ class ExtractResponse(BaseModel):
     embedding: list[float]
     model: str
     status: str 
+
+class EmbedRequest(BaseModel):
+    text: str 
+
+class EmbedResponse(BaseModel):
+    embedding: list[float]
+    model: str
     
 @app.post("/extract", response_model=ExtractResponse)
 def extract(req: ExtractRequest):
@@ -39,3 +46,12 @@ def extract(req: ExtractRequest):
         
     except Exception as e:
         raise HTTPException(status_code=400, detail = str(e))
+    
+    
+@app.post("/embed", response_model=EmbedResponse)
+def embed(req: EmbedRequest):
+    emb = embedder.embed(req.text)
+    return {
+        "embedding": emb,
+        "model": embedder.model_name
+    }
