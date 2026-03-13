@@ -67,11 +67,18 @@ func main() {
 
 	fsWatcher.Start()
 
+	watcher.StartPolling(absPath, rawEvents)
+
 	//Add Debouncer
 	debouncer := debounce.New(DebounceDelay, rawEvents, stableEvents)
 	debouncer.Start()
 
-	extractor := client.NewExtractorClient("http://127.0.0.1:8001")
+	//Call extractor
+	url := os.Getenv("EXTRACTOR_URL")
+	if url == "" {
+		url = "http//127.0.0.1:8001"
+	}
+	extractor := client.NewExtractorClient(url)
 	pool := worker.New(WorkerCount, stableEvents, db, extractor)
 
 	//Handle shutdown

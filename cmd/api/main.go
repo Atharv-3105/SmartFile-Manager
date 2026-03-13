@@ -37,7 +37,13 @@ func main() {
 		log.Fatal("[API] schema init:", err)
 	}
 
-	extractor := client.NewExtractorClient("http://127.0.0.1:8001")
+
+	url  := os.Getenv("EXTRACTOR_URL")
+	if url == ""{
+		url = "http://127.0.0.1:8001"
+	}
+
+	extractor := client.NewExtractorClient(url)
 
 	//Routes    
 	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
