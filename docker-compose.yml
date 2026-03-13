@@ -1,0 +1,43 @@
+
+services:
+    
+    extractor: 
+          build :  
+              context:    ./extraction-service 
+          container_name:  filemana_extractor
+          ports:
+              - "8001:8001"
+          volumes:
+             - ./watched:/app/watched
+             - ./models:/models
+          environment:
+             - HF_HOME=/models
+          
+
+    watcher: 
+          build:
+                context: .
+                dockerfile: Dockerfile.watcher 
+          container_name:   filemana_watcher
+          depends_on:
+              - extractor 
+          volumes:
+              - ./data:/app/data 
+              - ./watched:/app/watched 
+          environment:
+              -  EXTRACTOR_URL=http://extractor:8001 
+
+    api: 
+          build:
+                context:  . 
+                dockerfile: Dockerfile.api
+          container_name:     filemana_api
+          depends_on:
+                - extractor
+          ports:
+            -   "8080:8080"
+          volumes: 
+            -  ./data:/app/data 
+          environment:
+            -  EXTRACTOR_URL=http://extractor:8001
+      
