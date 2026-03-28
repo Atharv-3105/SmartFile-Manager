@@ -1,4 +1,4 @@
-# 🧠 AI-Enhanced File Manager (Local Semantic Search Engine)
+# 🧠 Smart File Manager (Local Semantic Search Engine)
 
 A **local AI-powered file management system** that enables **semantic search over your files** — find documents based on meaning, not just filenames.
 
